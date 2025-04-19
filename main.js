@@ -39,7 +39,8 @@ ipcMain.handle('select-video', async () => {
 ipcMain.handle('compress-video', async (event, inputPath) => {
   const outputPath = inputPath.replace(/\.(mp4|mov|avi)$/i, '_compressed.mp4');
 
-  const command = `ffmpeg -i "${inputPath}" -vf scale=-2:360 -vcodec libx264 -crf 34 -preset veryslow -acodec aac -ac 1 -b:a 32k "${outputPath}"`;
+  // ✅ FFmpegのフルパス指定で確実に動作
+  const command = `/opt/homebrew/bin/ffmpeg -i "${inputPath}" -vf scale=-2:360 -vcodec libx264 -crf 34 -preset veryslow -acodec aac -ac 1 -b:a 32k "${outputPath}"`;
 
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
